@@ -24,9 +24,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-f6633s@9t^@-w%8)%b6upo^^zge6llh08dn*($x=yy4+*!sat1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = []
+# 增加允许的访问地址
+ALLOWED_HOSTS = [
+    'www.infcloud.uk',
+    'infcloud.uk',
+    '127.0.0.1',
+]
 
 
 # Application definition

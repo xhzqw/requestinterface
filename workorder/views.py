@@ -4,18 +4,37 @@ from workorder.models import WorkOrder
 import json
 
 # 创建工单
-def create_workorder(request):
+def addorder(request):
     if request.method == 'POST':
         try:
             # 从请求体中解析 JSON 数据
             data = json.loads(request.body)
-            # 创建新的工单
-            workorder = WorkOrder.objects.create(**data)
-            return JsonResponse({'message': '工单创建成功', 'id': workorder.id}, status=201)
+            # 创建工单对象
+            workorder = WorkOrder(**data)
+            # 保存工单
+            workorder.save()
+            return JsonResponse({'message': '工单创建成功'}, status=201)
         except Exception as e:
             # 返回错误信息
             return JsonResponse({'error': str(e)}, status=400)
     # 如果请求方法不是 POST，返回 405 错误
+    return JsonResponse({'error': '无效的请求方法'}, status=405)
+# 删除工单
+def deleteorder(request):
+    if request.method == 'DELETE':
+        try:
+            # 从请求体中解析 JSON 数据
+            data = json.loads(request.body)
+            workorder_id = data.get('id')
+            # 根据 ID 查询工单，如果不存在则返回 404
+            workorder = get_object_or_404(WorkOrder, id=workorder_id)
+            # 删除工单
+            workorder.delete()
+            return JsonResponse({'message': '工单删除成功'}, status=200)
+        except Exception as e:
+            # 返回错误信息
+            return JsonResponse({'error': str(e)}, status=400)
+    # 如果请求方法不是 DELETE，返回 405 错误
     return JsonResponse({'error': '无效的请求方法'}, status=405)
 
 # 查询工单
